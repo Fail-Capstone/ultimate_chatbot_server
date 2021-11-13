@@ -4,6 +4,7 @@ const argon2 = require("argon2");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/auth");
+const { syncIndexes } = require("../models/User");
 
 //@route GET api/auth
 //@check user is logged in

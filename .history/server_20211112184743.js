@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
     res.send("auth chatbot");
 });
 app.use("/api/auth", authRoutes);
-app.use("/api/intents", intentRoutes);
+app.use("/api/intents", authRoutes);
 connectDB();
 
 app.listen(PORT, () => console.log(`server is running on port ${PORT}`));

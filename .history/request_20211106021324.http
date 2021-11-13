@@ -1,0 +1,27 @@
+GET  http://localhost:5000/
+
+################################
+
+POST  http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "datga@gmail.com",
+    "password": "datga"
+}
+
+################################
+
+POST  http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "datgavl",
+    "password": "datga"
+}
+
+################################
+
+GET http://localhost:5000/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGMxYWZkODU0YzVhYzFlMjhlMWQxYjMiLCJpYXQiOjE2MjMzMDYyMTJ9.hunz8jjZnr4Ji0h9_JYH03pzXgU3MJDee_k4yeJvuxk
+
