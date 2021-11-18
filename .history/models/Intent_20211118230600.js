@@ -10,7 +10,7 @@ const IntentSchema = new Schema(
         tag: {
             type: String,
             required: true,
-            unique: true,
+            unique: true
         },
         patterns: {
             type: [String],
