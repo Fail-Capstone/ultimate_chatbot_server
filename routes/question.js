@@ -50,11 +50,12 @@ router.post("/", async (req, res) => {
 // @route DELETE api/questions
 router.delete("/", verifyToken, async (req, res) => {
     try {
-        const questionDeleteCondition = { _id: { $in: req.body } };
+        const {questions} = req.body;
+        const questionDeleteCondition = { question: { $in: [...questions] } };
         const deletedQuestions = await Question.deleteMany(
             questionDeleteCondition
         );
-
+            
         // Error handling
         if (!deletedQuestions)
             return res.status(401).json({
@@ -66,7 +67,7 @@ router.delete("/", verifyToken, async (req, res) => {
         console.log(error);
         res.status(500).json({
             success: false,
-            message: "Internal server error",
+            message: "Internal server error eee",
         });
     }
 });
