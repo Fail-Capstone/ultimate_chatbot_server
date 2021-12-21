@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../middleware/auth");
 const Intent = require("../models/Intent");
+const Question = require("../models/Question");
 
 // @route GET api/intents
 router.get("/", verifyToken, async (req, res) => {
@@ -93,6 +94,7 @@ router.post("/patterns", verifyToken, async (req, res) => {
                     element !== ""
                 ) {
                     updatedPatterns.patterns.push(element);
+                    await Question.findOneAndDelete(element);
                 }
             });
             const intentUpdateCondition = { _id: updatedPatterns._id };
