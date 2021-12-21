@@ -88,7 +88,7 @@ router.post("/patterns", verifyToken, async (req, res) => {
     try {
         let updatedPatterns = await Intent.findOne({ tag });
         if (updatedPatterns) {
-            pattern.forEach((element) => {
+            pattern.forEach( async (element) => {
                 if (
                     !updatedPatterns.patterns.includes(element) &&
                     element !== ""
