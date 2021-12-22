@@ -4,20 +4,6 @@ const verifyToken = require("../middleware/auth");
 const Intent = require("../models/Intent");
 const Question = require("../models/Question");
 
-// @route GET api/intents
-router.get("/", verifyToken, async (req, res) => {
-    try {
-        const intents = await Intent.find();
-        res.json({ success: true, intents });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-        });
-    }
-});
-
 // @route GET api/intents/tags
 router.get("/tags", verifyToken, async (req, res) => {
     try {
@@ -47,37 +33,6 @@ router.get("/:id", verifyToken, async (req, res) => {
     }
 });
 
-// @route POST api/intents
-router.post("/", verifyToken, async (req, res) => {
-    const { name, tag, patterns, response } = req.body;
-
-    if (!name || !tag)
-        return res
-            .status(400)
-            .json({ success: false, message: "name and tag is required" });
-
-    try {
-        const newIntent = new Intent({
-            name,
-            tag,
-            patterns,
-            response,
-        });
-        await newIntent.save();
-        res.json({
-            success: true,
-            message: "New intent successfully saved",
-            intent: newIntent,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-        });
-    }
-});
-
 //@route POST api/intents/patterns
 router.post("/patterns", verifyToken, async (req, res) => {
     const { tag, pattern } = req.body;
@@ -88,8 +43,7 @@ router.post("/patterns", verifyToken, async (req, res) => {
     try {
         let updatedPatterns = await Intent.findOne({ tag });
         if (updatedPatterns) {
-            pattern.forEach( async (element) => {
-                await Question.findOneAndDelete({ question:element });
+            pattern.forEach((element) => {
                 if (
                     !updatedPatterns.patterns.includes(element) &&
                     element !== ""
@@ -103,6 +57,9 @@ router.post("/patterns", verifyToken, async (req, res) => {
                 updatedPatterns,
                 { new: true }
             );
+            pattern.forEach(async (element) => {
+                await Question.findOneAndDelete({ question: element });
+            });
         }
 
         // Error handling
@@ -196,6 +153,48 @@ router.delete("/:id", verifyToken, async (req, res) => {
         });
     }
 });
+// @route GET api/intents
+router.get("/", verifyToken, async (req, res) => {
+    try {
+        const intents = await Intent.find();
+        res.json({ success: true, intents });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+});
+// @route POST api/intents
+router.post("/", verifyToken, async (req, res) => {
+    const { name, tag, patterns, response } = req.body;
 
+    if (!name || !tag)
+        return res
+            .status(400)
+            .json({ success: false, message: "name and tag is required" });
+
+    try {
+        const newIntent = new Intent({
+            name,
+            tag,
+            patterns,
+            response,
+        });
+        await newIntent.save();
+        res.json({
+            success: true,
+            message: "New intent successfully saved",
+            intent: newIntent,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+});
 module.exports = router;
-1
+1;
