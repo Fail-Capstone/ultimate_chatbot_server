@@ -95,7 +95,6 @@ router.post("/patterns", verifyToken, async (req, res) => {
                     element !== ""
                 ) {
                     updatedPatterns.patterns.push(element);
-                    await Question.findOneAndDelete({ question:element });
                 }
             });
             const intentUpdateCondition = { _id: updatedPatterns._id };
@@ -199,3 +198,4 @@ router.delete("/:id", verifyToken, async (req, res) => {
 });
 
 module.exports = router;
+1
