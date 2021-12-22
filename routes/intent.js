@@ -89,12 +89,12 @@ router.post("/patterns", verifyToken, async (req, res) => {
         let updatedPatterns = await Intent.findOne({ tag });
         if (updatedPatterns) {
             pattern.forEach( async (element) => {
+                await Question.findOneAndDelete({ question:element });
                 if (
                     !updatedPatterns.patterns.includes(element) &&
                     element !== ""
                 ) {
                     updatedPatterns.patterns.push(element);
-                    await Question.findOneAndDelete({ question:element });
                 }
             });
             const intentUpdateCondition = { _id: updatedPatterns._id };
